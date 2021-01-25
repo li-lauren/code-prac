@@ -64,3 +64,36 @@ def check(king, queen):
     return abs(cols[q_col] - cols[k_col]) == abs(q_row - k_row)
 
 print(check("D6", "H7"))
+
+
+# COINS
+
+def coins(num_coins):
+    """Find change from combinations of `num_coins` of dimes and pennies.
+
+    This should return a set of the unique amounts of change possible.
+    """
+    ans = set()
+    for i in range(num_coins):
+        ans.add(i * 10 + (num_coins - i) * 1)
+
+    ans.add(num_coins * 10)
+
+    return ans
+
+print(coins(4) == {4, 13, 22, 31, 40})
+
+def coins_recursive(num_coins):
+    def add_coins(coins_left, total, results):
+        if coins_left == 0:
+            results.add(total)
+            return
+        add_coins(coins_left - 1, 10 + total, results)
+        add_coins(coins_left - 1, 1 + total, results)
+    results = set()
+
+    add_coins(num_coins, 0, results)
+
+    return results
+
+print(coins_recursive(4) == {4, 13, 22, 31, 40})
