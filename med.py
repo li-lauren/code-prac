@@ -97,3 +97,65 @@ def coins_recursive(num_coins):
     return results
 
 print(coins_recursive(4) == {4, 13, 22, 31, 40})
+
+
+# Compress String
+
+def compress_string(s):
+    curr = s[0]
+    ans = s[0]
+    count = 1
+
+    for ch in s[1:]:
+        if ch == curr:
+            count += 1
+        else:
+            if count > 1:
+                ans += str(count)
+            count = 1
+            curr = ch
+            ans += ch
+
+    # account for if last character is repeated        
+    if count > 1:
+        ans += str(count)
+
+    return ans
+
+print(compress_string('balloonicorn'))
+
+
+# Count employees
+class Node(object):
+    """Node in a tree."""
+
+    def __init__(self, name, children=None):
+        self.name = name
+        self.children = children or []
+
+    def count_employees(self):
+        """Return a count of how many employees this person manages.
+
+        Return a count of how many people that manager manages. This should
+        include *everyone* under them, not just people who directly report to
+        them.
+        """
+
+        if not self.children:
+            return 0
+        else:
+            return len(self.children) + sum([child.count_employees() for child in self.children])
+
+
+# Dec to Binary
+def dec2bin(num):
+    """Convert a decimal number to binary representation."""
+
+    bin = ""
+    while num >= 1:
+        bin = str(num % 2) + bin
+        num = num // 2
+    
+    return bin
+
+print(dec2bin(13))
