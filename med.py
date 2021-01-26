@@ -274,3 +274,39 @@ f.set_friends("Sauron", ["Dick Cheney"])
 
 print(f.are_connected("Frodo", "Sam"))
 
+# Hexadecimal Conversion
+
+def hex_convert(hex_in):
+    """Convert a hexadecimal string, like '1A', into it's decimal equivalent."""
+
+    hex_vals = {}
+
+    for num in range(0,10):
+        hex_vals[str(num)] = num
+    i = 10
+    for ch in "ABCDEF":
+        hex_vals[ch] = i
+        i += 1
+
+    ans = 0
+    L = len(hex_in)
+    for i in range(L):
+        ans += hex_vals[hex_in[L-i-1]] * 16**i
+
+    return ans
+
+print(hex_convert('FFFF'))
+
+# Insertion Sort
+def insertion_sort(lst):
+    for i in range(1,len(lst)):
+        j = 1
+        curr = lst[i]
+        while curr < lst[i-j] and i - j >= 0:
+            lst[i-j+1] = lst[i-j]
+            lst[i-j] = curr
+            j += 1
+    
+    return lst
+
+print(insertion_sort([2,4,3,1]))
