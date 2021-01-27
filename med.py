@@ -310,3 +310,67 @@ def insertion_sort(lst):
     return lst
 
 print(insertion_sort([2,4,3,1]))
+
+# Josephus Survivors
+
+def find_survivor(num_people, kill_every):
+    """Given num_people in circle, kill [kill_every]th person, return survivor."""
+
+    class Node:
+        """Doubly-linked Node."""
+        def __init__(self, val, prev=None, next=None):
+            self.val = val
+            self.prev = prev
+            self.next = next
+
+        def remove(self):
+            self.prev.next = self.next
+            self.next.prev = self.prev
+
+    head = Node(1)
+    last = Node(num_people)
+    head.prev = last
+    last.next = head
+
+    prev_node = head
+    for i in range(2, num_people): 
+        curr_node = Node(i, prev_node)
+        prev_node.next = curr_node
+        prev_node = curr_node
+
+    prev_node.next = last
+
+    node = head
+    while node != node.next:
+        for i in range(kill_every - 1):
+            node = node.next
+        node.remove()
+        node = node.next
+    return node.val
+
+print(find_survivor(10,3))
+
+# Largest Subseq Sum
+def largest_sum(nums):
+    """Find subsequence with largest sum."""
+
+    best_sum = 0
+    curr_sum = 0
+    start_i = 0
+    best_slice = None
+
+    for i, num in enumerate(nums):
+        if curr_sum + num < 0:
+            curr_sum = 0
+            best_slice = (start_i, i)
+            start_i = i+1
+        else:
+            curr_sum += num
+            if curr_sum > best_sum:
+                best_sum = curr_sum
+                best_slice = (start_i, i+1)
+
+    return nums[best_slice[0]:best_slice[1]]
+
+print(largest_sum([1, 0, 3, -8, 4, -2, 3]))
+            
