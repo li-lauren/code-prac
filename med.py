@@ -373,4 +373,101 @@ def largest_sum(nums):
     return nums[best_slice[0]:best_slice[1]]
 
 print(largest_sum([1, 0, 3, -8, 4, -2, 3]))
-            
+
+
+# Leveret lunch
+
+def lunch_count(garden):
+    """Given a garden of nrows of ncols, return carrots eaten."""
+
+    # Sanity check that garden is valid
+
+    row_lens = [len(row) for row in garden]
+    assert min(row_lens) == max(row_lens), "Garden not a matrix!"
+    assert all(all(type(c) is int for c in row) for row in garden), \
+        "Garden values must be ints!"
+
+    # Get number of rows and columns
+
+    nrows = len(garden)
+    ncols = len(garden[0])
+
+    def get_starting_pos(n):
+        mids = []
+
+        if n % 2 == 1:
+            mids.append(n // 2)
+        else:
+            mids.append(int(n/ 2))
+            mids.append(int(n / 2 - 1))
+
+        return mids
+
+    mid_rows = get_starting_pos(nrows)
+    mid_cols = get_starting_pos(ncols)
+
+    # get starting index
+    curr_max = 0
+    max_row = None
+    max_col = None
+    for i in mid_rows:
+        for j in mid_cols:
+            if garden[i][j] > curr_max:
+                curr_max = garden[i][j]
+                max_row = i
+                max_col = j
+
+    total = curr_max
+    garden[max_row][max_col] = 0
+
+    # get next pos
+    def get_next_pos(pos_i, pos_j):
+        curr_max = 0
+        max_i = None
+        max_j = None
+
+        def update_max(i, j):
+            nonlocal curr_max
+            nonlocal max_i
+            nonlocal max_j
+            if garden[i][j] > curr_max:
+                curr_max = garden[i][j]
+                max_i = i
+                max_j = j
+        
+        if pos_j - 1 >= 0:
+            update_max(pos_i, pos_j - 1)
+        if pos_i - 1 >= 0:
+            update_max(pos_i - 1, pos_j)
+        if pos_j + 1 < ncols:
+            update_max(pos_i, pos_j + 1)
+        if pos_i + 1 < nrows:
+            update_max(pos_i + 1, pos_j)
+
+        if curr_max == 0:
+            return None
+        else:
+            garden[max_i][max_j] = 0
+            return (curr_max, max_i, max_j)
+
+    while True:
+        y = get_next_pos(max_row, max_col)
+        
+        if y:
+            total += y[0]
+            max_row = y[1]
+            max_col = y[2]
+        else:
+            return total
+
+
+garden = [
+    [2, 3, 1, 4, 2, 2, 3],
+    [2, 3, 0, 4, 0, 3, 0],
+    [1, 7, 0, 2, 1, 2, 3],
+    [9, 3, 0, 4, 2, 0, 3],
+]
+
+print(lunch_count(garden))
+
+
