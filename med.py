@@ -471,3 +471,60 @@ garden = [
 print(lunch_count(garden))
 
 
+# Max Path Triangle
+
+class Node(object):
+    """Basic node class that keeps track fo parents and children.
+
+    This allows for multiple parents---so this isn't for trees, where
+    nodes can only have one children. It is for "directed graphs".
+    """
+
+    def __init__(self, value):
+        self.value = value
+        self.children = []
+        self.parents = []
+
+    def __repr__(self):
+        return str(self.value)
+
+
+# Merge Sort
+def merge_sort(lst):
+
+    if len(lst) > 1:
+        mid = len(lst) // 2
+        left = lst[:mid]
+        right = lst[mid:]
+
+        merge_sort(left)
+        merge_sort(right)
+
+        left_i = right_i = new_i = 0
+
+        while left_i < len(left) and right_i < len(right):
+            if left[left_i] < right[right_i]:
+                lst[new_i] = left[left_i]
+                left_i += 1
+            else:
+                lst[new_i] = right[right_i]
+                right_i += 1
+            new_i += 1
+
+        while left_i < len(left):
+            lst[new_i] = left[left_i]
+            left_i += 1
+            new_i += 1
+
+        while right_i < len(right):
+            lst[new_i] = right[right_i]
+            right_i += 1
+            new_i += 1
+
+    return lst
+
+lst = [3,2,6,4,7,8,5]
+
+print(merge_sort(lst))
+
+
