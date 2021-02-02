@@ -580,3 +580,68 @@ sentences = parse('iatenoodlesfordinnertonight', vocab)
 
 for s in sorted(sentences):
     print(s)
+
+
+# Tree cousins
+class Node(object):
+    """Doubly-linked node in a tree.
+
+        >>> na = Node("na")
+        >>> nb1 = Node("nb1")
+        >>> nb2 = Node("nb2")
+
+        >>> nb1.set_parent(na)
+        >>> nb2.set_parent(na)
+
+        >>> na.children
+        [<Node nb1>, <Node nb2>]
+
+        >>> nb1.parent
+        <Node na>
+    """
+
+    parent = None
+
+    def __init__(self, data):
+        self.children = []
+        self.data = data
+
+    def __repr__(self):
+        return "<Node %s>" % self.data
+
+    def set_parent(self, parent):
+        """Set parent of this node.
+
+        Also sets the children of the parent to include this node.
+        """
+
+        self.parent = parent
+        parent.children.append(self)
+
+    def cousins(self):
+        """Find nodes on the same level as this node."""
+        curr = self
+        level = 0
+
+        while curr.parent:
+            curr = curr.parent
+            level += 1
+
+        cousins = set()
+
+        def _cousins(node, curr_depth):
+            if not node:
+                return 
+
+            if curr_depth == level:
+                cousins.add(node)
+                return
+            
+            for child in node.children:
+                _cousins(child, curr_depth + 1)
+
+        _cousins(curr, 0)
+
+        cousins.remove(self)
+
+        return cousins
