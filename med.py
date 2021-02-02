@@ -527,4 +527,56 @@ lst = [3,2,6,4,7,8,5]
 
 print(merge_sort(lst))
 
+# Word Break
 
+def parse(phrase, vocab, cache=None):
+    """Break a string into words.
+
+    Input:
+        - string of words without space breaks
+        - vocabulary (set of allowed words)
+
+    Output:
+        set of all possible ways to break this down, given a vocab
+    """
+
+    if cache is None:
+        cache = {}
+
+    if phrase in cache:
+        return cache[phrase]
+    
+    if not phrase:
+        return []
+
+    potential_sentences = []
+    
+    found_match = False
+    for i in range(len(phrase)):
+        chs = phrase[:i+1]
+        if chs in vocab:
+            res = parse(phrase[i+1:], vocab)
+            if not res:
+                potential_sentences.extend([chs])
+            else:
+                potential_sentences.extend([chs + " " + x for x in res])
+            found_match = True
+
+    if not found_match:
+        return ["0"]
+
+    ans = []
+
+    for sentence in potential_sentences:
+        if sentence[-1] != "0":
+            ans.append(sentence)
+    cache[phrase] = ans
+    return ans
+
+vocab = {'i', 'a', 'ten', 'oodles', 'ford', 'inner', 'to',
+ 'night', 'ate', 'noodles', 'for', 'dinner', 'tonight'}
+
+sentences = parse('iatenoodlesfordinnertonight', vocab)
+
+for s in sorted(sentences):
+    print(s)
