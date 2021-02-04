@@ -645,3 +645,52 @@ class Node(object):
         cousins.remove(self)
 
         return cousins
+
+# Stock prices
+
+def best(prices):
+    min = prices[0]
+    max_profit = 0
+
+    for price in prices:
+        if price > min:
+            max_profit = max(price - min, max_profit)
+        else:
+            min = price
+    
+    return max_profit
+
+# Reverse words
+def rev(s):
+    """Reverse word-order in string, preserving spaces."""
+
+    groups = []
+    count = 0
+    word = ""
+
+    for ch in s:
+        if ch == " ":
+            if word:
+                groups.append(word)
+                word = ""
+                count = 1
+            else:
+                count += 1
+        else:
+            if count > 0:
+                groups.append(count*" ")
+                count = 0
+            word += ch
+
+    if count > 0:
+        groups.append(count * " ")
+    if word:
+        groups.append(word)
+
+    ans_s = ''
+    for i in groups:
+        ans_s = i + ans_s
+
+    return ans_s
+
+
