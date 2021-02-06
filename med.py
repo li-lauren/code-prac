@@ -488,6 +488,18 @@ class Node(object):
     def __repr__(self):
         return str(self.value)
 
+    def maxpath(triangle):
+        node = triangle[0]
+        def _maxpath(node):
+            if not node:
+                return 0
+
+            curr_val = node.value
+
+            return curr_val + max([_maxpath(i) for i in node.children])
+        
+        return _maxpath(node)
+
 
 # Merge Sort
 def merge_sort(lst):
@@ -692,5 +704,38 @@ def rev(s):
         ans_s = i + ans_s
 
     return ans_s
+
+parent_child_pairs_1 = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7), (4, 5),(4, 8), (4, 9), (9, 11), (14, 4), (13, 12), (12, 9)]
+
+def has_common_ancestor(pairs, v1, v2):
+    h = {}
+
+    for pair in pairs:
+        child = pair[1]
+        parent = pair[0]
+
+        h.setdefault(child, [])
+        h[child].append(parent)
+
+    def get_ancestors(child):
+        ancestors = []
+        if child in h:
+            ancestors.extend(h[child])
+
+            if ancestors:
+                for parent in ancestors:
+                    ancestors.extend(get_ancestors(parent))
+            
+        return set(ancestors)
+
+    v1_ancestors = get_ancestors(v1)
+    v2_ancestors = get_ancestors(v2)
+
+    return len(v1_ancestors & v2_ancestors) != 0
+
+print(has_common_ancestor(parent_child_pairs_1, 3, 8))
+print(has_common_ancestor(parent_child_pairs_1, 5, 8))
+
+
 
 
