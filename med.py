@@ -737,5 +737,41 @@ print(has_common_ancestor(parent_child_pairs_1, 3, 8))
 print(has_common_ancestor(parent_child_pairs_1, 5, 8))
 
 
+logs = [
+["58523", "user_1", "resource_1"],
+["62314", "user_2", "resource_2"],
+["54001", "user_1", "resource_3"],
+["200", "user_6", "resource_5"],
+["215", "user_6", "resource_4"],
+["54060", "user_2", "resource_3"],
+["53760", "user_3", "resource_3"],
+["58522", "user_4", "resource_1"],
+["53651", "user_5", "resource_3"],
+["2", "user_6", "resource_1"],
+["100", "user_6", "resource_6"],
+["400", "user_7", "resource_2"],
+["100", "user_8", "resource_2"],
+["54359", "user_1", "resource_3"],
+]
 
+def min_max_times(logs):
+    h = {}
+    for log in logs:
+        user = log[1]
+        time = int(log[0])
+        h.setdefault(user, [])
+        if not h[user]:
+            h[user].append(time)
+            h[user].append(time)
+        else: 
+            if time <= h[user][0]:
+                h[user][0] = time
+                continue
+           
+            if time > h[user][1]:
+                h[user][1] = time
+
+    return h
+    
+print(min_max_times(logs))
 
