@@ -775,3 +775,43 @@ def min_max_times(logs):
     
 print(min_max_times(logs))
 
+def most_pop_resource(logs):
+    h = {}
+    for log in logs:
+        res = log[2]
+        time = int(log[0])
+        h.setdefault(res, [])
+        h[res].append(time)
+    
+    def get_access_nums(times):
+        times.sort()
+        print(times)
+        i = 0
+        j = 0
+        max_count = 0
+        count = 0
+        while i < len(times) and j < len(times):
+            if times[j] <= times[i] + 300:
+                count += 1
+                j += 1
+                if count > max_count:
+                    max_count = count
+            else:
+                i += 1
+                count -= 1
+
+        return max_count
+
+
+    max_count = 0
+    max_res = None
+    for res in h:
+        count = get_access_nums(h[res])
+        
+        if count > max_count:
+            max_count = count
+            max_res = res
+
+    return (max_res, max_count)
+
+print(most_pop_resource(logs))
