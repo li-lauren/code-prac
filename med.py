@@ -815,3 +815,56 @@ def most_pop_resource(logs):
     return (max_res, max_count)
 
 print(most_pop_resource(logs))
+
+# Board
+def check_end(board, end):
+    zero_count = 0
+    num_cols = len(board[0])
+    num_rows = len(board)
+
+    for row in range(num_rows):
+        for col in range(num_cols):
+            if board[row][col] == 0:
+                zero_count += 1
+     
+    def check_neighbors(end):
+        row = end[0]
+        col = end[1]
+
+        possible_moves = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
+        valid_moves = []
+        for move in possible_moves:
+            new_r = move[0]
+            new_c = move[1]
+            if new_r in range(num_rows) and new_c in range(num_cols):
+                if board[new_r][new_c] != -1:
+                    valid_moves.append(move)
+        return set(valid_moves)
+    print(check_neighbors((1,2)))
+    to_check = []
+    seen = set()
+    to_check.append(end)
+
+    connected_zero_count = 0
+
+    while to_check:
+        print(to_check)
+        curr_pos = to_check.pop()
+        seen.add(curr_pos)
+        if board[curr_pos[0]][curr_pos[1]] == 0:
+            connected_zero_count += 1
+        valid_moves = check_neighbors(curr_pos)
+        for move in valid_moves - seen:
+            to_check.append(move)
+            seen.add(move)
+    
+    return connected_zero_count == zero_count
+
+
+board3_2 = [
+    [  0,  1, -1 ],
+    [  0,  0,  0 ],
+    [  0,  0,  0 ],
+]
+
+print(check_end(board3_2, (1,1)))
